@@ -22,7 +22,7 @@ def SURF(initImg, processImg):
     print (speedPF, speedPKF, KeyValueComp(numOF, numFF))
 def FAST(initImg, processImg):
     t0 = time.time()
-    fast = cv2.FastFeatureDetector(0, False)
+    fast = cv2.FastFeatureDetector(40, False)
     kp = fast.detect(initImg, None)
     t1 = time.time()
     speedPF = t1-t0
@@ -36,11 +36,40 @@ def FAST(initImg, processImg):
     numFF = len(kp2)
 
     print (speedPF, speedPKF, KeyValueComp(numOF, numFF))
-# def SIFT(initImg, processImg):
-#     t0 = time.time()
-#     sift = cv2.xfe
-# def STAR(initImg, processImg):
-#     #Here CODE
+def SIFT(initImg, processImg):
+    t0 = time.time()
+    sift = cv2.SIFT(400)
+    kp, des = sift.detectAndCompute(initImg, None)
+    t1= time.time()
+    speedPF = t1-t0
+    numOF = len(kp)
+    if (numOF != 0):
+        speedPKF = speedPF/numOF
+    else:
+        speedPKF = speedPF/1
+
+    kp2, des = sift.detectAndCompute(processImg,None)
+    numFF = len(kp2)
+
+    print (speedPF, speedPKF, KeyValueComp(numOF, numFF))
+
+def ORB(initImg, processImg):
+    t0 = time.time()
+    orb = cv2.ORB_create()
+    kp, des = orb.detectAndCompute(initImg, None)
+    t1= time.time()
+    speedPF = t1-t0
+    numOF = len(kp)
+    if (numOF != 0):
+        speedPKF = speedPF/numOF
+    else:
+        speedPKF = speedPF/1
+
+    kp2, des = orb.detectAndCompute(processImg,None)
+    numFF = len(kp2)
+
+    print (speedPF, speedPKF, KeyValueComp(numOF, numFF))
+
 def MSER(initImg, processImg):
     t0 = time.time()
     mser = cv2.FeatureDetector_create('MSER')
@@ -78,6 +107,6 @@ cv2.imshow('process image', initImg)
 
 SURF(initImg, processImg)
 FAST(initImg, processImg)
-#SIFT(initImg, processImg)
-#STAR(initImg, processImg)
+SIFT(initImg, processImg)
+ORB(initImg, processImg)
 MSER(initImg, processImg)
